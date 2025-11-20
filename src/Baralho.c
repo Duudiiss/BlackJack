@@ -29,6 +29,8 @@ static int _verificaEmbaralhamento(const Baralho* baralho)
 
 static int _baralhoBaixo(const Baralho* baralho)
 {
+    if (baralho->tamanho/MAX_CARTAS < PONTO_REEMBARALHA)
+        return 1;
     return 0;
 }
 

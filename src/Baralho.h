@@ -2,7 +2,7 @@
 #define BARALHO_H
 
 #define MAX_CARTAS 52
-
+#define PONTO_REEMBARALHA 0.25f
 
 struct Carta {
     int numero;
@@ -16,6 +16,7 @@ struct Baralho {
     int tamanho;
 };
 typedef struct Baralho Baralho;
+
 Baralho* CriaBaralho();
 int DestroiBaralho(Baralho* baralho);
 int Embaralha(Baralho* baralho);
