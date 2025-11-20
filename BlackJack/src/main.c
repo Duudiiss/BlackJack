@@ -1,6 +1,7 @@
 #include <stdio.h>
+#include "Baralho.h"
 
 void main(void)
 {
-	printf("teste");
+	printf("teste Cmake funcionando");
 }

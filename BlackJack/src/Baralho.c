@@ -1,8 +1,8 @@
-#pragma once
+
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "../includes/Baralho.h"
+#include "Baralho.h"
 
 static int _verificaEmbaralhamento(const Baralho* baralho) 
 {

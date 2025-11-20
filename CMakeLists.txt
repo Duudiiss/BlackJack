@@ -1,15 +1,16 @@
-﻿# CMakeList.txt: arquivo de projeto de CMake de nível superior, fazer configuração global
-# e inclua subprojetos aqui.
-#
-cmake_minimum_required (VERSION 3.8)
+﻿cmake_minimum_required(VERSION 3.10)
+project(BlackJack)
 
-# Habilite a Recarga Dinâmica para compiladores MSVC, se houver suporte.
-if (POLICY CMP0141)
-  cmake_policy(SET CMP0141 NEW)
-  set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
+# Especificar que é um programa console
+add_executable(BlackJack 
+    src/main.c
+    src/Baralho.c
+    src/Baralho.h
+)
+
+# Se estiver compilando como Windows App, mude para Console:
+if(WIN32)
+    set_target_properties(BlackJack PROPERTIES
+        WIN32_EXECUTABLE FALSE
+    )
 endif()
-
-project ("BlackJack")
-
-# Inclua subprojetos.
-add_subdirectory ("BlackJack")
