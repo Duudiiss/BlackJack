@@ -3,11 +3,11 @@
 #ifndef JOGADOR_H
 #define JOGADOR_H
 
-#define MAX_CARTAS 12
+#define MAX_MAO_CARTAS 12
 
 struct Jogador
 {
-    Carta* cartas[MAX_CARTAS];
+    Carta* cartas[MAX_MAO_CARTAS];
     char nome[50];
 };
 typedef struct Jogador Jogador;
