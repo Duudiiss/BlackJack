@@ -20,7 +20,7 @@ Jogador* CriaJogador(const char* nome)
     strncpy(novo_jogador->nome, nome, sizeof(novo_jogador->nome) - 1);
     novo_jogador->nome[sizeof(novo_jogador->nome) - 1] = '\0';
     
-    for (int i = 0; i < MAX_CARTAS; i++) {
+    for (int i = 0; i < MAX_MAO_CARTAS; i++) {
         novo_jogador->cartas[i] = NULL;
     }
     
@@ -48,7 +48,7 @@ int GetJogadorQuantidadeCartas(Jogador* jogador)
     if (!jogador) return -1;
 
     int count = 0;
-    for (int i = 0; i < MAX_CARTAS; i++)
+    for (int i = 0; i < MAX_MAO_CARTAS; i++)
         if (jogador->cartas[i] != NULL)
             count++;
 
@@ -58,7 +58,7 @@ int GetJogadorQuantidadeCartas(Jogador* jogador)
 Carta* JogadorGetCarta(MaoJogador* jogador, int indice)
 {
     if (!jogador) return NULL;
-    if (indice < 0 || indice >= MAX_CARTAS || indice > JogadorGetQuantidadeCartas(MaoJogador* jogador)) return NULL;
+    if (indice < 0 || indice >= MAX_MAO_CARTAS || indice > JogadorGetQuantidadeCartas(MaoJogador* jogador)) return NULL;
     if()
     return jogador->cartas[indice];
 }
@@ -81,7 +81,7 @@ int JogadorLimpaMao(Jogador* jogador)
 {
     if (!jogador) return 1;
 
-    for (int i = 0; i < MAX_CARTAS; i++) {
+    for (int i = 0; i < MAX_MAO_CARTAS; i++) {
         if (jogador->cartas[i] != NULL) {
             free(jogador->cartas[i]);
             jogador->cartas[i] = NULL;
