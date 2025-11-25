@@ -44,7 +44,7 @@ echo.
 
 :: Compilar testes do BARALHO
 echo 🔨 Compilando test_baralho.c ...
-gcc -Wall -Wextra -o test_jogador.exe test_jogador.c Jogador.c Baralho.c
+gcc -Wall -Wextra -o test_baralho.exe test_baralho.c Jogador.c Baralho.c
 if %errorlevel% neq 0 (
     echo.
     echo ❌ ERRO: Falha na compilacao de test_baralho.c !

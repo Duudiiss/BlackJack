@@ -25,7 +25,7 @@ int verificaBaralhoCompleto(const Baralho* baralho) {
     char naipes[] = {'C', 'O', 'E', 'P'};
     
     for (int i = 0; i < tamanho; i++) {
-        const Carta* c = BaralhoGetCartaConst(baralho, i);
+        const Carta* c = BaralhoGetCarta(baralho, i);
         if (!c) return 0;
 
         int  numero = CartaGetNumero(c);
@@ -80,7 +80,7 @@ int test_CriaBaralho() {
     int tamanho = BaralhoGetTamanho(baralho);
 
     for (int i = 0; i < tamanho; i++) {
-        const Carta* c = BaralhoGetCartaConst(baralho, i);
+        const Carta* c = BaralhoGetCarta(baralho, i);
         TEST_ASSERT(c != NULL, "Carta acessivel por indice");
 
         int numero = CartaGetNumero(c);
@@ -138,8 +138,8 @@ int test_Embaralha() {
     int cartas_na_mesma_posicao = 0;
 
     for (int i = 0; i < limite; i++) {
-        const Carta* c1 = BaralhoGetCartaConst(baralho, i);
-        const Carta* c2 = BaralhoGetCartaConst(baralho2, i);
+        const Carta* c1 = BaralhoGetCarta(baralho, i);
+        const Carta* c2 = BaralhoGetCarta(baralho2, i);
         TEST_ASSERT(c1 != NULL && c2 != NULL, "Cartas acessiveis apos embaralhar");
 
         int num1 = CartaGetNumero(c1);
@@ -206,7 +206,7 @@ int test_ValoresCartas() {
     int tamanho = BaralhoGetTamanho(baralho);
     
     for (int i = 0; i < tamanho; i++) {
-        const Carta* c = BaralhoGetCartaConst(baralho, i);
+        const Carta* c = BaralhoGetCarta(baralho, i);
         TEST_ASSERT(c != NULL, "Carta acessivel por indice");
 
         int numero = CartaGetNumero(c);
