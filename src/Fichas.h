@@ -5,21 +5,19 @@ typedef struct {
     float saldo;
 } Carteira;
 
-struct Jogador;  // declaração antecipada para evitar dependência circular
-
-// Inicializa uma carteira com o saldo inicial
+// Inicializa uma carteira
 Carteira* InitWallet(float fichasIniciais);
 
-// Retorna o saldo do jogador
-float GetBalance(struct Jogador *jogador);
+// Retorna o saldo da carteira
+float CarteiraGetSaldo(const Carteira* carteira);
 
-// Desconta um valor da carteira do jogador
-int descontaCarteira(struct Jogador *jogador, float valor);
+// Desconta um valor da carteira
+int CarteiraDesconta(Carteira* carteira, float valor);
 
-// Soma um valor na carteira do jogador
-int somaCarteira(struct Jogador *jogador, float valor);
+// Soma um valor na carteira
+int CarteiraSoma(Carteira* carteira, float valor);
 
-// Libera memória da carteira do jogador
-int ExcluiCarteira(struct Jogador *jogador);
+// Libera memória da carteira
+int CarteiraExclui(Carteira* carteira);
 
 #endif

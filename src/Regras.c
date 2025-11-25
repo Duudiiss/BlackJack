@@ -1,5 +1,3 @@
-
-
 #include <stdio.h>
 #include "Jogador.h"
 #include "fichas.h"
@@ -16,7 +14,7 @@ int ValorDaMao(Jogador *j) {
     int ases = 0;
     int ncartas = GetJogadorQuantidadeCartas(j);
     for (int i = 0; i < ncartas; i++) {
-        const Carta *c = GetJogadorCarta(j, i);
+        const Carta *c = JogadorGetCarta(j, i);
         if (!c) continue;
         int numero = CartaGetNumero(c);
 
@@ -56,47 +54,42 @@ int TemBlackjack(Jogador *j) {
 }
 
 /* -------------------------
-   Pagamentos e efeitos na carteira
-   Observação de design:
-   - Assumimos que a aposta já foi removida do saldo no momento da aposta.
-   - As funções abaixo apenas creditam (somaCarteira) ou reembolsam (Empate).
+   NOVAS FUNÇÕES DE PAGAMENTO
+   Agora recebem Carteira* diretamente em vez de Jogador*
    ------------------------- */
 
-void AplicarVitoria(Jogador *jogador, float aposta) {
-    if (!jogador) return;
-    /* paga o valor da aposta como ganho (ex: aposta 20 -> +20) */
-    printf("AplicarVitoria: adicionando %.2f ao saldo do jogador\n", aposta);
-    somaCarteira(jogador, aposta);
+void AplicarVitoria(Carteira* carteira, float aposta) {
+    if (!carteira) return;
+    printf("AplicarVitoria: adicionando %.2f ao saldo\n", aposta);
+    CarteiraSoma(carteira, aposta);
 }
 
-void AplicarDerrota(Jogador *jogador, float aposta) {
-    (void)aposta; /* aposta já removida previamente; nada a creditar */
-    if (!jogador) return;
+void AplicarDerrota(Carteira* carteira, float aposta) {
+    (void)carteira; // aposta já foi removida anteriormente
+    (void)aposta;
     printf("AplicarDerrota: aposta perdida.\n");
 }
 
-void AplicarEmpate(Jogador *jogador, float aposta) {
-    if (!jogador) return;
-    printf("AplicarEmpate: devolvendo aposta %.2f ao jogador\n", aposta);
-    somaCarteira(jogador, aposta);
+void AplicarEmpate(Carteira* carteira, float aposta) {
+    if (!carteira) return;
+    printf("AplicarEmpate: devolvendo aposta %.2f\n", aposta);
+    CarteiraSoma(carteira, aposta);
 }
 
-void AplicarBlackjack(Jogador *jogador, float aposta) {
-    if (!jogador) return;
-    /* paga 3:2 -> ganho de 1.5 * aposta (método: devolver aposta + lucro de 0.5*aposta) */
+void AplicarBlackjack(Carteira* carteira, float aposta) {
+    if (!carteira) return;
     float ganho = aposta * 1.5f;
-    printf("AplicarBlackjack: pagando blackjack %.2f ao jogador\n", ganho);
-    somaCarteira(jogador, ganho);
+    printf("AplicarBlackjack: pagando blackjack %.2f\n", ganho);
+    CarteiraSoma(carteira, ganho);
 }
 
 /* -------------------------
    Resolver resultado entre jogador e dealer
-   - jogador: jogador
-   - dealer: jogador que representa o dealer (mesmo tipo)
-   - aposta: valor original da aposta (pressuposta já removida do saldo)
+   AGORA recebe Carteira* em vez de Jogador*
    ------------------------- */
-void ResolverRodada(Jogador *jogador, Jogador *dealer, float aposta) {
-    if (!jogador || !dealer) return;
+void ResolverRodada(Carteira* carteiraJogador, Carteira* carteiraDealer, 
+                   Jogador *jogador, Jogador *dealer, float aposta) {
+    if (!carteiraJogador || !jogador || !dealer) return;
 
     int vJ = ValorDaMao(jogador);
     int vD = ValorDaMao(dealer);
@@ -106,34 +99,34 @@ void ResolverRodada(Jogador *jogador, Jogador *dealer, float aposta) {
 
     /* Jogador estourou */
     if (vJ > 21) {
-        AplicarDerrota(jogador, aposta);
+        AplicarDerrota(carteiraJogador, aposta);
         return;
     }
 
     /* Dealer estourou */
     if (vD > 21) {
-        AplicarVitoria(jogador, aposta);
+        AplicarVitoria(carteiraJogador, aposta);
         return;
     }
 
     /* Blackjack natural */
     if (TemBlackjack(jogador) && !TemBlackjack(dealer)) {
-        AplicarBlackjack(jogador, aposta);
+        AplicarBlackjack(carteiraJogador, aposta);
         return;
     }
 
     /* Dealer tem blackjack e jogador não -> derrota */
     if (!TemBlackjack(jogador) && TemBlackjack(dealer)) {
-        AplicarDerrota(jogador, aposta);
+        AplicarDerrota(carteiraJogador, aposta);
         return;
     }
 
     /* Comparação simples */
     if (vJ > vD) {
-        AplicarVitoria(jogador, aposta);
+        AplicarVitoria(carteiraJogador, aposta);
     } else if (vJ < vD) {
-        AplicarDerrota(jogador, aposta);
+        AplicarDerrota(carteiraJogador, aposta);
     } else {
-        AplicarEmpate(jogador, aposta);
+        AplicarEmpate(carteiraJogador, aposta);
     }
 }

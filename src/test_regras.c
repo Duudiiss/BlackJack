@@ -20,12 +20,13 @@ int main() {
     Jogador *jogador = CriaJogador("Alice");
     Jogador *dealer  = CriaJogador("Dealer");
 
-    jogador->carteira = InitWallet(1000);
-    dealer->carteira  = InitWallet(1000);
+    // Cria carteiras separadas (não vinculadas ao Jogador)
+    Carteira *carteiraJogador = InitWallet(1000);
+    Carteira *carteiraDealer = InitWallet(1000);
 
     float aposta = 100;
 
-    printf("Saldo inicial jogador: %.2f\n", GetBalance(jogador));
+    printf("Saldo inicial jogador: %.2f\n", CarteiraGetSaldo(carteiraJogador));
 
     /* ---- JOGADOR recebe 2 cartas ---- */
     JogadorRecebeCarta(jogador, PegaCarta(b));
@@ -49,20 +50,26 @@ int main() {
     if (TemBlackjack(dealer))
         printResultado("Dealer tem BLACKJACK!");
 
-    /* ---- Teste: Resolução da rodada ---- */
-    ResolverRodada(jogador, dealer, aposta);
+    /* ---- Remove aposta do saldo antes do jogo ---- */
+    printf("\nRemovendo aposta de %.2f...\n", aposta);
+    CarteiraDesconta(carteiraJogador, aposta);
 
-    printf("\nSaldo FINAL do jogador: %.2f\n", GetBalance(jogador));
-    printf("Saldo FINAL do dealer : %.2f\n", GetBalance(dealer));
+    /* ---- Teste: Resolução da rodada (NOVA API) ---- */
+    ResolverRodada(carteiraJogador, carteiraDealer, jogador, dealer, aposta);
+
+    printf("\nSaldo FINAL do jogador: %.2f\n", CarteiraGetSaldo(carteiraJogador));
+    printf("Saldo FINAL do dealer : %.2f\n", CarteiraGetSaldo(carteiraDealer));
 
     /* ---- Limpeza ---- */
     JogadorLimpaMao(jogador);
     JogadorLimpaMao(dealer);
-    ExcluiCarteira(jogador);
-    ExcluiCarteira(dealer);
+    
+    // Libera as carteiras (não faz parte do Jogador)
+    CarteiraExclui(carteiraJogador);
+    CarteiraExclui(carteiraDealer);
+    
     DestroiJogador(jogador);
     DestroiJogador(dealer);
-
     DestroiBaralho(b);
 
     return 0;
