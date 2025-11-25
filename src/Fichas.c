@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "carteira.h"
+#include "fichas.h"
 #include "jogador.h"
 
 Carteira* InitWallet(float fichasIniciais) {
