@@ -21,4 +21,5 @@ const Carta* BaralhoGetCartaConst(const Baralho* baralho, int indice);
 int CartaGetNumero(const Carta* carta);
 char CartaGetNaipe(const Carta* carta);
 int CartaGetValor(const Carta* carta);
+void mostraCarta(const Carta* carta);
 #endif

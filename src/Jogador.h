@@ -1,10 +1,19 @@
 #include "Baralho.h"
+#include "Fichas.h"
 
 #ifndef JOGADOR_H
 #define JOGADOR_H
 
 #define MAX_MAO_CARTAS 12
 
+struct Jogador
+{
+    Carta* cartas[MAX_MAO_CARTAS];
+    Carteira * carteira;
+    char nome[50];
+    int fez_stand;
+    int fez_double;
+};
 typedef struct Jogador Jogador;
 
 Jogador* CriaJogador(const char* nome);

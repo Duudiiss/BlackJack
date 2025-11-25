@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Baralho.h"
+#include <locale.h>
 
 struct Carta {
     int numero;
@@ -152,4 +153,45 @@ int CartaGetValor(const Carta* carta)
 {
     if (!carta) return -1;
     return carta->valor;
+}
+
+
+void mostraCarta(const Carta* carta) {
+    // garante que printf use UTF-8
+    setlocale(LC_ALL, "");
+
+    // Obtém o naipe e o número da carta
+    char naipe = CartaGetNaipe(carta);
+    const char *naipeUTF8 = "?";
+    if (naipe == 'O') {
+        naipeUTF8 = "♦";  // Ouros
+    } else if (naipe == 'C') {
+        naipeUTF8 = "♥";  // Copas
+    } else if (naipe == 'E') {
+        naipeUTF8 = "♠";  // Espadas
+    } else if (naipe == 'P') {
+        naipeUTF8 = "♣";  // Paus
+    }
+
+    int numero = CartaGetNumero(carta);
+    
+    // Mapeando o número para A, J, Q, K
+    char numeroStr[3];
+    switch (numero) {
+        case 1:  snprintf(numeroStr, sizeof(numeroStr), "A"); break;
+        case 11: snprintf(numeroStr, sizeof(numeroStr), "J"); break;
+        case 12: snprintf(numeroStr, sizeof(numeroStr), "Q"); break;
+        case 13: snprintf(numeroStr, sizeof(numeroStr), "K"); break;
+        default: snprintf(numeroStr, sizeof(numeroStr), "%d", numero);
+    }
+    
+    // Exibe a carta
+    printf("\n");
+    printf("  ---------\n");
+    printf(" |%2s       |\n", numeroStr);
+    printf(" |         |\n");
+    printf(" |    %s    |\n", naipeUTF8);   // símbolo UTF-8
+    printf(" |         |\n");
+    printf(" |       %2s|\n", numeroStr);
+    printf("  ---------\n");
 }

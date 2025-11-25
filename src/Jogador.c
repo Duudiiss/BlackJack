@@ -1,17 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include "Jogador.h"
-#include "Baralho.h"
 
-struct Jogador
-{
-    Carta* cartas[MAX_MAO_CARTAS];
-    char nome[50];
-    int fez_stand;
-    int fez_double;
-};
+
 
 Jogador* CriaJogador(const char* nome)
 {
@@ -24,6 +16,15 @@ Jogador* CriaJogador(const char* nome)
         printf("Erro de alocação de memória!\n");
         return NULL;
     }
+
+    // Aloca carteira
+    novo_jogador->carteira = (Carteira*)malloc(sizeof(Carteira));
+    if (novo_jogador->carteira == NULL) {
+        printf("Erro de alocação de memória para carteira!\n");
+        free(novo_jogador);
+        return NULL;
+    }
+    novo_jogador->carteira->saldo = 0.0;
     
     strncpy(novo_jogador->nome, nome, sizeof(novo_jogador->nome) - 1);
     novo_jogador->nome[sizeof(novo_jogador->nome) - 1] = '\0';

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "carteira.h"
-#include "jogador.h"
+#include "Fichas.h"
+#include "Jogador.h"
 
 Carteira* InitWallet(float fichasIniciais) {
     Carteira *novaCarteira = (Carteira*) malloc(sizeof(Carteira));
