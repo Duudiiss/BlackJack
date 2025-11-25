@@ -11,11 +11,11 @@ Baralho* CriaBaralho();
 int DestroiBaralho(Baralho* baralho);
 int Embaralha(Baralho* baralho);
 Carta* PegaCarta(Baralho* baralho);
-static int _baralhoBaixo(const Baralho* baralho);
+int _baralhoBaixo(const Baralho* baralho);
 
 /* Getters de BARALHO (acesso controlado) */
 int BaralhoGetTamanho(const Baralho* baralho);
-const Carta* BaralhoGetCartaConst(const Baralho* baralho, int indice);
+const Carta* BaralhoGetCarta(const Baralho* baralho, int indice);
 
 /* Getters de CARTA (acesso controlado) */
 int CartaGetNumero(const Carta* carta);

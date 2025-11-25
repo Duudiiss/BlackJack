@@ -13,6 +13,16 @@ struct Jogador
     int fez_double;
 };
 
+char* GetNomeJogador(Jogador* j)
+{
+    return j->nome;
+}
+
+Carta** GetMaoJogador(Jogador* j)
+{
+    return j->cartas;
+}
+
 Jogador* CriaJogador(const char* nome)
 {
     if (nome == NULL || strlen(nome) == 0)
@@ -48,7 +58,9 @@ int DestroiJogador(Jogador* jogador)
             }
         }
         free(jogador);
+        return 0;
     }
+    return -1;
 }
 
 int GetJogadorQuantidadeCartas(Jogador* jogador)
@@ -63,7 +75,7 @@ int GetJogadorQuantidadeCartas(Jogador* jogador)
     return count;
 }
 
-Carta* JogadorGetCarta(Jogador* jogador, int indice)
+Carta* GetJogadorCarta(Jogador* jogador, int indice)
 {
     if (!jogador) return NULL;
     if (indice < 0 || indice >= MAX_MAO_CARTAS || indice > GetJogadorQuantidadeCartas(jogador)) return NULL;

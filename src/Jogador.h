@@ -24,4 +24,5 @@ int JogadorLimpaMao(Jogador* jogador);
 //GETTERS
 Carta* GetJogadorCarta(Jogador* jogador, int indice);
 int GetJogadorQuantidadeCartas(Jogador* jogador);
+char* GetNomeJogador(Jogador* j);
 #endif

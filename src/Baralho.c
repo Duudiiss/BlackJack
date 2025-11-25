@@ -17,7 +17,6 @@ struct Baralho {
 
 static int _verificaEmbaralhamento(const Baralho* baralho) 
 {
-    int ordenado = 1;
     int sequencias_ordenadas = 0;
     
     // Verifica se há muitas sequências ordenadas
@@ -127,7 +126,7 @@ int BaralhoGetTamanho(const Baralho* baralho)
     return baralho->tamanho;
 }
 
-const Carta* BaralhoGetCartaConst(const Baralho* baralho, int indice)
+const Carta* BaralhoGetCarta(const Baralho* baralho, int indice)
 {
     if (!baralho) return NULL;
     if (indice < 0 || indice >= baralho->tamanho) return NULL;
