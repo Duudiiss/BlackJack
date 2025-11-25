@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "fichas.h"
-#include "jogador.h"
 
 Carteira* InitWallet(float fichasIniciais) {
     Carteira *novaCarteira = (Carteira*) malloc(sizeof(Carteira));
@@ -13,55 +12,49 @@ Carteira* InitWallet(float fichasIniciais) {
     return novaCarteira;
 }
 
-float GetBalance(Jogador *jogador) {
-    if (jogador == NULL || jogador->carteira == NULL) {
-        fprintf(stderr, "Erro: Jogador ou carteira inválidos.\n");
+float CarteiraGetSaldo(const Carteira* carteira) {
+    if (carteira == NULL) {
+        fprintf(stderr, "Erro: Carteira inválida.\n");
         return -1.0f;
     }
-    return jogador->carteira->saldo;
+    return carteira->saldo;
 }
 
-int descontaCarteira(Jogador *jogador, float valor) {
-    if (jogador == NULL || jogador->carteira == NULL) {
-        fprintf(stderr, "Erro: Jogador ou carteira inválidos.\n");
+int CarteiraDesconta(Carteira* carteira, float valor) {
+    if (carteira == NULL) {
+        fprintf(stderr, "Erro: Carteira inválida.\n");
         return -1;
     }
     if (valor < 0) {
         fprintf(stderr, "Erro: Valor negativo para desconto.\n");
         return -1;
     }
-    if (jogador->carteira->saldo < valor) {
+    if (carteira->saldo < valor) {
         fprintf(stderr, "Erro: Saldo insuficiente.\n");
         return -1;
     }
-    jogador->carteira->saldo -= valor;
+    carteira->saldo -= valor;
     return 0;
 }
 
-int somaCarteira(Jogador *jogador, float valor) {
-    if (jogador == NULL || jogador->carteira == NULL) {
-        fprintf(stderr, "Erro: Jogador ou carteira inválidos.\n");
+int CarteiraSoma(Carteira* carteira, float valor) {
+    if (carteira == NULL) {
+        fprintf(stderr, "Erro: Carteira inválida.\n");
         return -1;
     }
     if (valor < 0) {
         fprintf(stderr, "Erro: Valor negativo para soma.\n");
         return -1;
     }
-    jogador->carteira->saldo += valor;
+    carteira->saldo += valor;
     return 0;
 }
 
-int ExcluiCarteira(Jogador *jogador) {
-    if (jogador == NULL) {
-        fprintf(stderr, "Erro: Jogador inválido.\n");
+int CarteiraExclui(Carteira* carteira) {
+    if (carteira == NULL) {
+        fprintf(stderr, "Aviso: Carteira já é NULL.\n");
         return -1;
     }
-    if (jogador->carteira == NULL) {
-        fprintf(stderr, "Aviso: Jogador não possui carteira para excluir.\n");
-        return -1;
-    }
-
-    free(jogador->carteira);
-    jogador->carteira = NULL; // evita ponteiro solto
+    free(carteira);
     return 0;
 }
