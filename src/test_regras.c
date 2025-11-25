@@ -2,7 +2,7 @@
 #include <assert.h>
 #include "regras.h"
 #include "jogador.h"
-#include "carteira.h"
+#include "fichas.h"
 
 /* =====================================================
    Função auxiliar para criar jogador com carteira
