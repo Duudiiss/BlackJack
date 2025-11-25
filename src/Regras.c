@@ -1,16 +1,4 @@
-/*
- * Regras.c
- *
- * Implementação das regras de avaliação de mãos e pagamentos para Blackjack.
- * Usa apenas a API pública presente nos headers:
- *  - Jogador.h  (GetJogadorQuantidadeCartas, GetJogadorCarta, CriaJogador, DestroiJogador, ...)
- *  - Fichas.h   (InitWallet, GetBalance, somaCarteira, descontaCarteira, ExcluiCarteira)
- *  - Baralho.h  (CartaGetNumero, CartaGetValor, etc.)
- *
- * NOTA: Regras.h deverá declarar os protótipos correspondentes. Eu gerei as funções
- * mais importantes aqui: ValorDaMao, Estourou, TemBlackjack, AplicarVitoria/Derrota/Empate/Blackjack
- * e ResolverRodada.
- */
+
 
 #include <stdio.h>
 #include "Jogador.h"
