@@ -2,7 +2,7 @@
 #define REGRAS_H
 
 #include "jogador.h"
-#include "carteira.h"
+#include "fichas.h"
 
 /* ======================================
    Funções de cálculo e estado da mão
