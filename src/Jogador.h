@@ -22,6 +22,7 @@ int JogadorRecebeCarta(Jogador* jogador, Carta* carta);
 int JogadorLimpaMao(Jogador* jogador);
 
 //GETTERS
-Carta* GetJogadorCarta(Jogador* jogador, int indice);
+Carta* JogadorGetCarta(Jogador* jogador, int indice);
 int GetJogadorQuantidadeCartas(Jogador* jogador);
 #endif
+

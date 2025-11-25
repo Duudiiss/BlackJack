@@ -4,14 +4,21 @@
 #include "regras.h"
 #include "jogador.h"
 #include "fichas.h"
+<<<<<<< Updated upstream
 #include "baralho.h"
+=======
+>>>>>>> Stashed changes
 
 /* =====================================================
    Função auxiliar para criar jogador com carteira
    ===================================================== */
 Jogador* NovoJogadorComSaldo(float saldo) {
     Jogador *j = CriaJogador("Teste");
+<<<<<<< Updated upstream
     InitWallet(j, saldo);
+=======
+    j->carteira = InitWallet(saldo);
+>>>>>>> Stashed changes
     return j;
 }
 
