@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "Regras.h"
-#include "carteira.h"
+#include "fichas.h"
 #include "jogador.h"
 
 /* ============================================================
