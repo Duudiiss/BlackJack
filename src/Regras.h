@@ -1,38 +1,33 @@
 #ifndef REGRAS_H
 #define REGRAS_H
 
-#include "jogador.h"
-#include "fichas.h"
+#include "Jogador.h"
 
-/* ======================================
-   Funções de cálculo e estado da mão
-   ====================================== */
+/* ============================================
+   Funções principais de lógica do Blackjack
+   ============================================ */
 
-// Retorna o valor total da mão do jogador (contando Ás como 1 ou 11)
+/* Retorna o valor da mão (A vale 1 ou 11). */
 int ValorDaMao(Jogador *j);
 
-// Retorna 1 se o jogador estourou (valor > 21)
+/* Retorna 1 se a mão passou de 21, caso contrário 0. */
 int Estourou(Jogador *j);
 
-// Retorna 1 se a mão tem blackjack natural (Ás + 10)
+/* Retorna 1 se tem blackjack natural (A + carta de valor 10). */
 int TemBlackjack(Jogador *j);
 
-
-/* ======================================
-   Pagamentos do resultado
-   ====================================== */
-
+/* Pagamentos e resultados */
 void AplicarVitoria(Jogador *jogador, float aposta);
 void AplicarDerrota(Jogador *jogador, float aposta);
 void AplicarEmpate(Jogador *jogador, float aposta);
 void AplicarBlackjack(Jogador *jogador, float aposta);
 
-
-/* ======================================
-   Resolução de uma rodada completa
-   ====================================== */
-
-// Compara mãos e aplica vitória/derrota/empate
+/*
+ * Resolve o vencedor da rodada:
+ * - jogador: jogador comum
+ * - dealer: jogador representando o dealer
+ * - aposta: aposta já debitada da carteira
+ */
 void ResolverRodada(Jogador *jogador, Jogador *dealer, float aposta);
 
 #endif
