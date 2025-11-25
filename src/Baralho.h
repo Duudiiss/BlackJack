@@ -4,21 +4,21 @@
 #define MAX_CARTAS 52
 #define PONTO_REEMBARALHA 0.25f
 
-struct Carta {
-    int numero;
-    char naipe;
-    int valor;
-};
 typedef struct Carta Carta;
-
-struct Baralho {
-    Carta cartas[MAX_CARTAS];
-    int tamanho;
-};
 typedef struct Baralho Baralho;
 
 Baralho* CriaBaralho();
 int DestroiBaralho(Baralho* baralho);
 int Embaralha(Baralho* baralho);
 Carta* PegaCarta(Baralho* baralho);
+static int _baralhoBaixo(const Baralho* baralho);
+
+/* Getters de BARALHO (acesso controlado) */
+int BaralhoGetTamanho(const Baralho* baralho);
+const Carta* BaralhoGetCartaConst(const Baralho* baralho, int indice);
+
+/* Getters de CARTA (acesso controlado) */
+int CartaGetNumero(const Carta* carta);
+char CartaGetNaipe(const Carta* carta);
+int CartaGetValor(const Carta* carta);
 #endif

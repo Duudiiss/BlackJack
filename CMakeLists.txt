@@ -2,10 +2,12 @@
 project(BlackJack)
 
 # Especificar que é um programa console
-add_executable(BlackJack 
+add_executable(BlackJack
     src/main.c
     src/Baralho.c
     src/Baralho.h
+    src/Jogador.c
+    src/Jogador.h
 )
 
 # Se estiver compilando como Windows App, mude para Console:

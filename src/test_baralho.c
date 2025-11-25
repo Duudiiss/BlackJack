@@ -18,18 +18,24 @@
 
 // Função auxiliar para verificar se baralho está completo
 int verificaBaralhoCompleto(const Baralho* baralho) {
-    if (baralho->tamanho != MAX_CARTAS) return 0;
+    int tamanho = BaralhoGetTamanho(baralho);
+    if (tamanho != MAX_CARTAS) return 0;
     
     int count[4][13] = {0}; // Matriz para contar cartas por naipe e número
     char naipes[] = {'C', 'O', 'E', 'P'};
     
-    for (int i = 0; i < baralho->tamanho; i++) {
-        Carta c = baralho->cartas[i];
+    for (int i = 0; i < tamanho; i++) {
+        const Carta* c = BaralhoGetCartaConst(baralho, i);
+        if (!c) return 0;
+
+        int  numero = CartaGetNumero(c);
+        char naipe  = CartaGetNaipe(c);
+        int  valor  = CartaGetValor(c);
         
         // Encontra índice do naipe
         int naipe_idx = -1;
         for (int n = 0; n < 4; n++) {
-            if (c.naipe == naipes[n]) {
+            if (naipe == naipes[n]) {
                 naipe_idx = n;
                 break;
             }
@@ -37,17 +43,17 @@ int verificaBaralhoCompleto(const Baralho* baralho) {
         if (naipe_idx == -1) return 0;
         
         // Verifica número válido
-        if (c.numero < 1 || c.numero > 13) return 0;
+        if (numero < 1 || numero > 13) return 0;
         
         // Verifica valor correto
         int valor_esperado;
-        if (c.numero == 1) valor_esperado = 11;
-        else if (c.numero > 10) valor_esperado = 10;
-        else valor_esperado = c.numero;
+        if (numero == 1)       valor_esperado = 11;
+        else if (numero > 10)  valor_esperado = 10;
+        else                   valor_esperado = numero;
         
-        if (c.valor != valor_esperado) return 0;
+        if (valor != valor_esperado) return 0;
         
-        count[naipe_idx][c.numero - 1]++;
+        count[naipe_idx][numero - 1]++;
     }
     
     // Verifica se tem exatamente uma carta de cada tipo
@@ -66,14 +72,22 @@ int test_CriaBaralho() {
     
     Baralho* baralho = CriaBaralho();
     TEST_ASSERT(baralho != NULL, "Baralho criado nao deve ser NULL");
-    TEST_ASSERT(baralho->tamanho == MAX_CARTAS, "Tamanho deve ser 52");
+    TEST_ASSERT(BaralhoGetTamanho(baralho) == MAX_CARTAS, "Tamanho deve ser 52");
     TEST_ASSERT(verificaBaralhoCompleto(baralho) == 1, "Baralho deve conter todas as 52 cartas unicas");
     
     // Verifica algumas cartas específicas
     int as_encontrado = 0, rei_encontrado = 0;
-    for (int i = 0; i < baralho->tamanho; i++) {
-        if (baralho->cartas[i].numero == 1 && baralho->cartas[i].valor == 11) as_encontrado = 1;
-        if (baralho->cartas[i].numero == 13 && baralho->cartas[i].valor == 10) rei_encontrado = 1;
+    int tamanho = BaralhoGetTamanho(baralho);
+
+    for (int i = 0; i < tamanho; i++) {
+        const Carta* c = BaralhoGetCartaConst(baralho, i);
+        TEST_ASSERT(c != NULL, "Carta acessivel por indice");
+
+        int numero = CartaGetNumero(c);
+        int valor  = CartaGetValor(c);
+
+        if (numero == 1  && valor == 11) as_encontrado = 1;
+        if (numero == 13 && valor == 10) rei_encontrado = 1;
     }
     TEST_ASSERT(as_encontrado, "Deve conter As com valor 11");
     TEST_ASSERT(rei_encontrado, "Deve conter Rei com valor 10");
@@ -107,7 +121,7 @@ int test_Embaralha() {
     // Teste com baralho válido
     int resultado = Embaralha(baralho);
     TEST_ASSERT(resultado == 0 || resultado == 1, "Embaralha deve retornar 0 ou 1");
-    TEST_ASSERT(baralho->tamanho == MAX_CARTAS, "Tamanho deve permanecer 52 apos embaralhar");
+    TEST_ASSERT(BaralhoGetTamanho(baralho) == MAX_CARTAS, "Tamanho deve permanecer 52 apos embaralhar");
     
     // Teste com NULL
     resultado = Embaralha(NULL);
@@ -115,18 +129,29 @@ int test_Embaralha() {
     
     // Teste múltiplos embaralhamentos
     Baralho* baralho2 = CriaBaralho();
-    int resultado1 = Embaralha(baralho);
-    int resultado2 = Embaralha(baralho2);
+    (void)Embaralha(baralho);
+    (void)Embaralha(baralho2);
     
     // Verifica se pelo menos algumas cartas mudaram de posição
+    int tamanho = BaralhoGetTamanho(baralho);
+    int limite = tamanho < 10 ? tamanho : 10;
     int cartas_na_mesma_posicao = 0;
-    for (int i = 0; i < 10; i++) { // Verifica apenas as primeiras 10 cartas
-        if (baralho->cartas[i].numero == baralho2->cartas[i].numero && 
-            baralho->cartas[i].naipe == baralho2->cartas[i].naipe) {
+
+    for (int i = 0; i < limite; i++) {
+        const Carta* c1 = BaralhoGetCartaConst(baralho, i);
+        const Carta* c2 = BaralhoGetCartaConst(baralho2, i);
+        TEST_ASSERT(c1 != NULL && c2 != NULL, "Cartas acessiveis apos embaralhar");
+
+        int num1 = CartaGetNumero(c1);
+        int num2 = CartaGetNumero(c2);
+        char np1 = CartaGetNaipe(c1);
+        char np2 = CartaGetNaipe(c2);
+
+        if (num1 == num2 && np1 == np2) {
             cartas_na_mesma_posicao++;
         }
     }
-    TEST_ASSERT(cartas_na_mesma_posicao < 10, "Embaralhamentos diferentes devem produzir ordens diferentes");
+    TEST_ASSERT(cartas_na_mesma_posicao < limite, "Embaralhamentos diferentes devem produzir ordens diferentes");
     
     DestroiBaralho(baralho);
     DestroiBaralho(baralho2);
@@ -138,18 +163,22 @@ int test_PegaCarta() {
     printf("\n=== TESTE PegaCarta ===\n");
     
     Baralho* baralho = CriaBaralho();
-    int tamanho_inicial = baralho->tamanho;
+    int tamanho_inicial = BaralhoGetTamanho(baralho);
     
     // Teste pegar várias cartas
     for (int i = 0; i < 5; i++) {
         Carta* carta = PegaCarta(baralho);
         TEST_ASSERT(carta != NULL, "PegaCarta deve retornar carta valida");
-        TEST_ASSERT(carta->numero >= 1 && carta->numero <= 13, "Carta deve ter numero entre 1-13");
-        TEST_ASSERT(baralho->tamanho == tamanho_inicial - i - 1, "Tamanho deve diminuir apos pegar carta");
+
+        int numero = CartaGetNumero(carta);
+        TEST_ASSERT(numero >= 1 && numero <= 13, "Carta deve ter numero entre 1-13");
+
+        TEST_ASSERT(BaralhoGetTamanho(baralho) == tamanho_inicial - i - 1,
+                    "Tamanho deve diminuir apos pegar carta");
     }
     
     // Teste pegar todas as cartas
-    while (baralho->tamanho > 0) {
+    while (BaralhoGetTamanho(baralho) > 0) {
         Carta* carta = PegaCarta(baralho);
         TEST_ASSERT(carta != NULL, "Deve conseguir pegar cartas ate o baralho acabar");
     }
@@ -157,7 +186,7 @@ int test_PegaCarta() {
     // Teste pegar carta de baralho vazio
     Carta* carta = PegaCarta(baralho);
     TEST_ASSERT(carta == NULL, "PegaCarta de baralho vazio deve retornar NULL");
-    TEST_ASSERT(baralho->tamanho == 0, "Tamanho deve permanecer 0");
+    TEST_ASSERT(BaralhoGetTamanho(baralho) == 0, "Tamanho deve permanecer 0");
     
     // Teste com NULL
     carta = PegaCarta(NULL);
@@ -174,18 +203,23 @@ int test_ValoresCartas() {
     Baralho* baralho = CriaBaralho();
     
     int as_count = 0, figura_count = 0, numero_count = 0;
+    int tamanho = BaralhoGetTamanho(baralho);
     
-    for (int i = 0; i < baralho->tamanho; i++) {
-        Carta c = baralho->cartas[i];
+    for (int i = 0; i < tamanho; i++) {
+        const Carta* c = BaralhoGetCartaConst(baralho, i);
+        TEST_ASSERT(c != NULL, "Carta acessivel por indice");
+
+        int numero = CartaGetNumero(c);
+        int valor  = CartaGetValor(c);
         
-        if (c.numero == 1) {
-            TEST_ASSERT(c.valor == 11, "As deve valer 11");
+        if (numero == 1) {
+            TEST_ASSERT(valor == 11, "As deve valer 11");
             as_count++;
-        } else if (c.numero >= 11 && c.numero <= 13) {
-            TEST_ASSERT(c.valor == 10, "Figuras (J, Q, K) devem valer 10");
+        } else if (numero >= 11 && numero <= 13) {
+            TEST_ASSERT(valor == 10, "Figuras (J, Q, K) devem valer 10");
             figura_count++;
         } else {
-            TEST_ASSERT(c.valor == c.numero, "Cartas 2-10 devem valer seu numero");
+            TEST_ASSERT(valor == numero, "Cartas 2-10 devem valer seu numero");
             numero_count++;
         }
     }

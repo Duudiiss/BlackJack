@@ -4,6 +4,17 @@
 #include <stdlib.h>
 #include "Baralho.h"
 
+struct Carta {
+    int numero;
+    char naipe;
+    int valor;
+};
+
+struct Baralho {
+    Carta cartas[MAX_CARTAS];
+    int tamanho;
+};
+
 static int _verificaEmbaralhamento(const Baralho* baralho) 
 {
     int ordenado = 1;
@@ -27,7 +38,7 @@ static int _verificaEmbaralhamento(const Baralho* baralho)
     return 0;
 }
 
-static int _baralhoBaixo(const Baralho* baralho)
+int _baralhoBaixo(const Baralho* baralho)
 {
     if (baralho->tamanho/MAX_CARTAS < PONTO_REEMBARALHA)
         return 1;
@@ -108,4 +119,37 @@ Carta* PegaCarta(Baralho* baralho)
     Carta* carta = &baralho->cartas[baralho->tamanho - 1];
     baralho->tamanho--;
     return carta;
+}
+
+int BaralhoGetTamanho(const Baralho* baralho)
+{
+    if (!baralho) return -1;
+    return baralho->tamanho;
+}
+
+const Carta* BaralhoGetCartaConst(const Baralho* baralho, int indice)
+{
+    if (!baralho) return NULL;
+    if (indice < 0 || indice >= baralho->tamanho) return NULL;
+    return &baralho->cartas[indice];
+}
+
+/* ================== GETTERS DE CARTA ================== */
+
+int CartaGetNumero(const Carta* carta)
+{
+    if (!carta) return -1;
+    return carta->numero;
+}
+
+char CartaGetNaipe(const Carta* carta)
+{
+    if (!carta) return '\0';
+    return carta->naipe;
+}
+
+int CartaGetValor(const Carta* carta)
+{
+    if (!carta) return -1;
+    return carta->valor;
 }

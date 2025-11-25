@@ -5,6 +5,14 @@
 #include "Jogador.h"
 #include "Baralho.h"
 
+struct Jogador
+{
+    Carta* cartas[MAX_MAO_CARTAS];
+    char nome[50];
+    int fez_stand;
+    int fez_double;
+};
+
 Jogador* CriaJogador(const char* nome)
 {
     if (nome == NULL || strlen(nome) == 0)
@@ -55,11 +63,10 @@ int GetJogadorQuantidadeCartas(Jogador* jogador)
     return count;
 }
 
-Carta* JogadorGetCarta(MaoJogador* jogador, int indice)
+Carta* JogadorGetCarta(Jogador* jogador, int indice)
 {
     if (!jogador) return NULL;
-    if (indice < 0 || indice >= MAX_MAO_CARTAS || indice > JogadorGetQuantidadeCartas(MaoJogador* jogador)) return NULL;
-    if()
+    if (indice < 0 || indice >= MAX_MAO_CARTAS || indice > GetJogadorQuantidadeCartas(jogador)) return NULL;
     return jogador->cartas[indice];
 }
 
@@ -69,7 +76,7 @@ int JogadorRecebeCarta(Jogador* jogador, Carta* carta)
     if (!carta) return 2;
     if (jogador->fez_stand) return 1;
 
-    int qtd = JogadorGetQuantidadeCartas(jogador);
+    int qtd = GetJogadorQuantidadeCartas(jogador);
     if (qtd >= MAX_MAO_CARTAS) return 1;
 
     jogador->cartas[qtd] = carta;
@@ -94,7 +101,7 @@ int JogadorLimpaMao(Jogador* jogador)
     return 0;
 }
 
-int JogadorExecutaHit(MaoJogador* jogador)
+int JogadorExecutaHit(Jogador* jogador)
 {
     if (!jogador) return 3;
     if (jogador->fez_stand) return 3;
@@ -102,7 +109,7 @@ int JogadorExecutaHit(MaoJogador* jogador)
     return 0; // success; Partida fará JogadorRecebeCarta
 }
 
-int JogadorExecutaStand(MaoJogador* jogador)
+int JogadorExecutaStand(Jogador* jogador)
 {
     if (!jogador) return 1;
     if (jogador->fez_stand) return 1;
@@ -111,11 +118,11 @@ int JogadorExecutaStand(MaoJogador* jogador)
     return 0;
 }
 
-int JogadorExecutaDouble(MaoJogador* jogador)
+int JogadorExecutaDouble(Jogador* jogador)
 {
     if (!jogador) return 3;
 
-    int qtd = JogadorGetQuantidadeCartas(jogador);
+    int qtd = GetJogadorQuantidadeCartas(jogador);
 
     if (qtd != 2) return 3;
     if (jogador->fez_stand) return 3;
@@ -127,7 +134,7 @@ int JogadorExecutaDouble(MaoJogador* jogador)
     return 0; // Partida adicionará a carta
 }
 
-int JogadorPedeAposta(MaoJogador* jogador)
+int JogadorPedeAposta(Jogador* jogador)
 {
     if (!jogador) return -1;
 
@@ -139,28 +146,28 @@ int JogadorPedeAposta(MaoJogador* jogador)
     return valor > 0 ? valor : -1;
 }
 
-void JogadorExibeMao(MaoJogador* jogador)
+void JogadorExibeMao(Jogador* jogador)
 {
     if (!jogador) return;
 
     printf("\nMão de %s:\n", jogador->nome);
 
-    int qtd = JogadorGetQuantidadeCartas(jogador);
+    int qtd = GetJogadorQuantidadeCartas(jogador);
 
     for (int i = 0; i < qtd; i++) {
         Carta* c = jogador->cartas[i];
         if (c != NULL)
-            printf("  [%d %c]\n", c->Numero, c->Naipe);
+            printf("  [%d %c]\n", CartaGetNumero(c), CartaGetNaipe(c));
     }
 }
 
-void JogadorExibeMensagem(MaoJogador* jogador, char* mensagem)
+void JogadorExibeMensagem(Jogador* jogador, char* mensagem)
 {
     if (!jogador || !mensagem) return;
     printf("[%s] %s\n", jogador->nome, mensagem);
 }
 
-int JogadorQuerJogarNovamente(MaoJogador* jogador)
+int JogadorQuerJogarNovamente(Jogador* jogador)
 {
     if (!jogador) return -1;
 
