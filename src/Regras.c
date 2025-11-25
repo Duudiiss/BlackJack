@@ -1,5 +1,3 @@
-
-
 #include <stdio.h>
 #include "Jogador.h"
 #include "fichas.h"
@@ -16,7 +14,7 @@ int ValorDaMao(Jogador *j) {
     int ases = 0;
     int ncartas = GetJogadorQuantidadeCartas(j);
     for (int i = 0; i < ncartas; i++) {
-        const Carta *c = GetJogadorCarta(j, i);
+        const Carta *c = JogadorGetCarta(j, i);  // CORRIGIDO: GetJogadorCarta → JogadorGetCarta
         if (!c) continue;
         int numero = CartaGetNumero(c);
 
