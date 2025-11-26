@@ -58,29 +58,29 @@ int TemBlackjack(Jogador *j) {
    Agora recebem Carteira* diretamente em vez de Jogador*
    ------------------------- */
 
-void AplicarVitoria(Carteira* carteira, float aposta) {
-    if (!carteira) return;
+void AplicarVitoria(Jogador *jogador, float aposta) {
+    if (!jogador) return;
     printf("AplicarVitoria: adicionando %.2f ao saldo\n", aposta);
-    CarteiraSoma(carteira, aposta);
+    somaCarteira(jogador, aposta);
 }
 
-void AplicarDerrota(Carteira* carteira, float aposta) {
-    (void)carteira; // aposta já foi removida anteriormente
+void AplicarDerrota(Jogador *jogador, float aposta) {
+    (void)jogador; // aposta já foi removida anteriormente no descontaCarteira
     (void)aposta;
     printf("AplicarDerrota: aposta perdida.\n");
 }
 
-void AplicarEmpate(Carteira* carteira, float aposta) {
-    if (!carteira) return;
+void AplicarEmpate(Jogador *jogador, float aposta) {
+    if (!jogador) return;
     printf("AplicarEmpate: devolvendo aposta %.2f\n", aposta);
-    CarteiraSoma(carteira, aposta);
+    somaCarteira(jogador, aposta);
 }
 
-void AplicarBlackjack(Carteira* carteira, float aposta) {
-    if (!carteira) return;
+void AplicarBlackjack(Jogador *jogador, float aposta) {
+    if (!jogador) return;
     float ganho = aposta * 1.5f;
     printf("AplicarBlackjack: pagando blackjack %.2f\n", ganho);
-    CarteiraSoma(carteira, ganho);
+    somaCarteira(jogador, ganho);
 }
 
 /* -------------------------
