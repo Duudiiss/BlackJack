@@ -10,7 +10,7 @@ static int calcula_valor_interno(Jogador* jogador)
     int ases = 0;
 
     for (int i = 0; i < qtd; i++) {
-        Carta* c = JogadorGetCarta(jogador, i);
+        Carta* c = GetJogadorCarta(jogador, i);
         if (!c) continue;
 
         int numero = CartaGetNumero(c);
