@@ -1,16 +1,15 @@
 ﻿cmake_minimum_required(VERSION 3.10)
-project(BlackJack)
+project(BlackJack C)
 
-# Especificar que é um programa console
 add_executable(BlackJack
     src/main.c
     src/Baralho.c
-    src/Baralho.h
     src/Jogador.c
-    src/Jogador.h
+    src/Regras.c
+    src/Fichas.c
+    src/Partida.c
 )
 
-# Se estiver compilando como Windows App, mude para Console:
 if(WIN32)
     set_target_properties(BlackJack PROPERTIES
         WIN32_EXECUTABLE FALSE
